@@ -31,7 +31,7 @@ IA4Dev 2026 · ANF jour 2
 ::
 :::
 
-::CoverTitle{sub="Comprendre et construire son harnais"}
+::CoverTitle{sub="Comprendre et construire son harnais" style="transform: translateY(-2rem)"}
 # Atelier<br />Acte 2
 ::
 
@@ -56,7 +56,7 @@ section: Introduction
 
 ::::Stack{gap=1}
 ::Act{n=1 title="Premier pas avec Pi"}
-Installer, se connecter aux modèles, comparer leurs réponses
+Prendre Herdr et Fresh en main, puis comparer les réponses des modèles
 ::
 ::Act{n=2 title="Sécurité et sandbox"}
 Mesurer ce que vaut une consigne face à un garde-fou
@@ -92,7 +92,8 @@ section: Introduction
 
 ::::::Stack{fill center gap=6}
 ::Lead
-Une exécution unique ne dit presque rien d’un modèle. Chaque exercice de la journée suit donc le même déroulé.
+Une exécution unique ne dit presque rien d’un modèle.<br />
+Chaque exercice de la journée suit donc le même déroulé.
 ::
 
 ::::Cols{cols=3 gap=5}
@@ -108,7 +109,7 @@ Comparez ce que l’agent a lu et fait, pas seulement le résultat. `/export` vo
 ::::
 
 ::Takeaway
-L'analyse des traces permet de connaître finement les qualités et les défauts d'un modèle. Vous savez ensuite dire quel modèle utiliser selon vos besoins.
+L'analyse des traces permet de connaître finement les qualités et les défauts d'un modèle. <br /> Vous savez ensuite dire quel modèle utiliser selon vos besoins.
 ::
 ::::::
 
@@ -122,197 +123,103 @@ index: Partie 1 / 5
 ::
 
 ::Agenda
-- Ce que fait Pi quand vous lui posez une question
-- Installer Pi et herdr, se connecter aux modèles
+- Prendre Herdr et Fresh en main
 - Les modèles de la formation
 - Comparer deux modèles et deux niveaux de réflexion
 ::
 
 ---
+# Image et schéma repris de la diapositive 23 de Jour1.pptx
 section: Partie 1 · Premier pas avec Pi
 ---
 
-# Une requête qui lit un seul fichier
+# Prendre Herdr en main
 
-::::Cols{cols="12.5rem 1fr" gap=6 fill align=center}
-:::Stack{gap=3}
-::Bullet{k="1"}
-Question → LLM
+:::::Stack{fill center gap=3}
+:::Stack{gap=2}
+:Eyebrow[Dans le terminal]
+
+```bash
+herdr
+```
+
+::Note{tag="Raccourci essentiel"}
+Appuyez sur `Ctrl+B`, relâchez, puis choisissez une touche. <br /> Par exemple, `?` affiche la liste complète des raccourcis actifs.
 ::
-::Bullet{k="2" accent}
-Appel outil
-::
-::Bullet{k="3"}
-LLM → Résultat
-::
+
+**Possibilité de navigation à la souris.**
+:::
+
+::::Cols{cols="3fr 2fr" gap=6 fill align=center}
+:::Cell{fill}
+<Fig src="/images/herdr-interface.jpg" frame="screen" contain h="220px" caption="Interface" />
 :::
 :::Cell{fill}
-<PiSequence />
+<Fig src="/images/herdr-tree.png" contain h="220px" caption="Schéma fonctionnel" />
 :::
 ::::
+:::::
 
 ---
-# Procédures tirées de pi.dev/docs/latest/quickstart et herdr.dev/docs/install (octobre 2026)
 section: Partie 1 · Premier pas avec Pi
 ---
 
-# Installer Pi et herdr :Hint[macOS et Linux]
+# Utiliser Fresh dans Herdr
 
-::::::Stack{fill center gap=6}
-::::Cols{cols=2 gap=7 align=start}
-:::Stack{gap=3 .code-sm}
-:Eyebrow[Pi · l’agent]
-
-```bash
-curl -fsSL https://pi.dev/install.sh | sh
-pi --version      # vérifier
-pi update         # mettre à jour
-```
-
-::Detail
-Ou via npm, avec Node.js 22.19 ou plus récent :
-::
+:::::Stack{fill center gap=5}
+:::Stack{gap=2}
+:Eyebrow[Dans un pane Herdr]
 
 ```bash
-npm install -g --ignore-scripts \
-  @earendil-works/pi-coding-agent
+fresh
 ```
-
-::Detail
-Windows : [pi.dev/docs/latest/quickstart](https://pi.dev/docs/latest/quickstart)
-::
 :::
 
-:::Stack{gap=3 .code-sm}
-:Eyebrow[herdr · le multiplexeur]{tone=teal}
+::::Cols{cols=2 gap=6 align=stretch}
+:::Card{variant=soft eyebrow="Clavier" title="Afficher l’éditeur" center}
+`Ctrl+B` permet d'afficher/masquer l'explorateur. <br /> Conflit avec raccourci Herdr.
 
-```bash
-curl -fsSL https://herdr.dev/install.sh | sh
-herdr             # lancer, pour vérifier
-herdr update      # mettre à jour
-```
+`Ctrl+B`, relâchez, puis `Ctrl+B` : Herdr transmet alors un `Ctrl+B` à Fresh.
+:::
+:::Card{variant=soft eyebrow="Souris" title="Ouvrir le menu contextuel d'un fichier" tone=teal center}
+Un clic droit affiche le menu de Herdr. <br /> Conflit avec Herdr.
 
-::Detail
-Ou via Homebrew, qui gère alors les mises à jour :
-::
-
-```bash
-brew install herdr
-brew upgrade herdr
-```
-
-::Detail
-Windows : [herdr.dev/docs/install](https://herdr.dev/docs/install)
-::
+`Ctrl` + clic droit transmet le clic à Fresh et affiche le menu contextuel d'un fichier.
 :::
 ::::
 
-::Takeaway
-Si le terminal ne trouve pas la commande, ouvrez-en un nouveau : l’installeur a ajouté le dossier au `PATH`.
-::
-::::::
+:::::
 
 ---
-# V2 : JSON corrigé (virgules en trop) et second modèle repris du cours ; note du cours sur le bloc cost
+# Source : github.com/AI-for-dev/providers/blob/main/extensions/index.ts
 section: Partie 1 · Premier pas avec Pi
 ---
 
-# Se connecter à des modèles :Hint[pi.dev/docs/latest/providers]{href="https://pi.dev/docs/latest/providers"}
+# Les modèles de la formation :Hint[configuration des endpoints]{href="https://github.com/AI-for-dev/providers/blob/main/extensions/index.ts"}
 
-::Lead
-**Méthode 1** : si vous avez une clé API, en modifiant votre `~/.pi/agent/models.json`
-::
+:::::Stack{fill center gap=4}
+:Eyebrow[Chaque ligne : fenêtre de contexte · vision si disponible · mode de réflexion]{tone=quiet}
 
-::::Cols{cols="3fr 2fr" gap=7 fill align=center}
-:::Cell{.code-xs}
-```json
-{
-  "providers": {
-    "ilaas": {
-      "baseUrl": "https://llm.ilaas.fr/v1",
-      "api": "openai-completions",
-      "apiKey": "XXXXX",
-      "models": [
-        {
-          "id": "gemma-4-31b",
-          "contextWindow": 128000,
-          "reasoning": true,
-          "cost": { "input": 0.14, "output": 0.28,
-                    "cacheRead": 0.0028, "cacheWrite": 0 }
-        },
-        { "id": "qwen-3.8-27b", "contextWindow": 256000 }
-      ]
-    }
-  }
-}
-```
+::::Cols{cols="5fr 4fr 4fr" gap=4 align=stretch}
+:::Card{variant=accent eyebrow="ILaaS" title="Offre Scaleway" size=xs}
+- **GLM 5.2** · 256K  
+- **GLM 5.3** · 256K ·
+- **DeepSeek V4.1 Flash** · 256K · 
+- **DeepSeek V4 Flash 0731** · 256K 
+- **Qwen3.8 27B** · 262K 
 :::
-:::Stack{gap=4}
-::Card{variant=soft eyebrow="Le bloc cost" size=sm}
-Optionnel, à zéro par défaut : sans lui, `/session` annonce un coût nul. Les prix sont au million de tokens.
-::
-::Note{tag="À retenir"}
-Le coût qu’affiche un agent ne vient pas du fournisseur : c’est une multiplication faite à partir d’un champ que **vous** avez écrit.
-::
+:::Card{variant=soft eyebrow="ILaaS" title="Hors offre Scaleway" size=xs}
+- **Qwen3.6 35B Instruct** · 262K · 
+- **Gemma 4 31B** · 131K 
+:::
+:::Card{variant=teal eyebrow="GRICAD" title="Plateforme IA4Dev" size=xs}
+- **Qwen3.8 27B** · 262K 
+- **DeepSeek V4.1 Flash** · ???
+- **Gemma 4 31B** · 159K ·
 :::
 ::::
 
----
-# Chiffres relevés sur les fiches Hugging Face (octobre 2026) : google/gemma-4-31B-it, Qwen/Qwen3.8-27B,
-# deepseek-ai/DeepSeek-V4-Flash, deepseek-ai/DeepSeek-V4.1-Flash, zai-org/GLM-5.2, zai-org/GLM-5.3.
-# V4.1 Flash : 552B de backbone (763B sur le Hub avec la mémoire Engram), 8B actifs au prefill, 16B au décodage.
-# GLM-5.3 reprend la base de GLM-5.2, seul le post-entraînement change.
-section: Partie 1 · Premier pas avec Pi
----
-
-# Les modèles de la formation :Hint[tous open weight]
-
-::::::Stack{fill center gap=6}
-::::Cols{cols=4 gap=4 align=stretch}
-:::Card{eyebrow="Google" title="Gemma 4 31B" size=sm}
-::Specs{w="5rem"}
-- **Type** dense
-- **Taille** 31B
-- **Fenêtre** 256K
-- **Licence** Apache 2.0
-::
-:::
-:::Card{eyebrow="Alibaba" title="Qwen3.8 27B" size=sm}
-::Specs{w="5rem"}
-- **Type** dense
-- **Taille** 27B
-- **Fenêtre** 256K
-- **Licence** Apache 2.0
-::
-:::
-:::Card{variant=soft eyebrow="DeepSeek" tone=teal title="V4 et V4.1 Flash" size=sm}
-::Specs{w="5rem"}
-- **Type** MoE
-- **V4** 284B A13B
-- **V4.1** 552B A16B
-- **Fenêtre** 1M
-- **Licence** MIT
-::
-:::
-:::Card{variant=soft eyebrow="Z.ai" tone=teal title="GLM 5.2 et 5.3" size=sm}
-::Specs{w="5rem"}
-- **Type** MoE
-- **Taille** 753B A40B
-- **Fenêtre** 1M
-- **Licence** MIT (5.2)<br />maison (5.3)
-::
-:::
-::::
-
-::::Cols{cols=2 gap=4}
-::Note{tag="Dense"}
-Tous les paramètres travaillent à chaque token. Une trentaine de milliards : ces modèles tiennent sur un GPU, une fois quantifiés.
-::
-::Note{tag="MoE"}
-Seuls quelques experts s’activent par token (le « A » : A13B, A40B). Trop gros pour un poste de travail, on les utilise via un fournisseur.
-::
-::::
-::::::
+:::::
 
 ---
 # V2 : NÉON s’importe sur un GitLab avant d’être cloné ; essais en low et high
